@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr"> <!-- Modificato per i18n -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fioreria del Lago - Studio di Design Floreale</title>
+    
+    <!-- Script Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=aspect-ratio,forms,typography"></script>
+    
+    <!-- Google Fonts: EB Garamond e Work Sans (Solo Medium 500) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Work+Sans:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+
+    <!-- Script per Lenis (Smooth Scroll Library) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Swiper.js (Carosello Galleria) -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Icona Favicon (fiore.svg) -->
+    <link rel="icon" href="fiore.svg" type="image/svg+xml">
+
+    <style type="text/tailwindcss" id="tailwind-config">
+        @layer base {
+            :root {
+                --color-avorio: #FEF9ED;
+                --color-greige: #41403E;
+                --color-accent: #B4C5D1;
+            }
+            html {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                /* Scrollbar personalizzata per Firefox */
+                scrollbar-width: thin;
+                scrollbar-color: var(--color-accent) var(--color-avorio);
+            }
+            /* Scrollbar personalizzata "a pillola" per WebKit */
+            html::-webkit-scrollbar {
+                width: 8px;
+            }
+            html::-webkit-scrollbar-track {
+                background: var(--color-avorio);
+            }
+            html::-webkit-scrollbar-thumb {
+                background-color: var(--color-accent);
+                border-radius: 9999px;
+                border: 2px solid var(--color-avorio);
+            }
+
+            body {
+                @apply bg-avorio text-greige font-secondary;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-primary;
+            }
+            a {
+                @apply transition-colors duration-300;
+            }
+            /* Bottoni Stile "Luxury" */
+            .btn {
+                @apply bg-accent text-greige font-secondary font-medium py-3 px-8 rounded-full transition-all duration-300;
+            }
+            .btn:hover {
+                @apply bg-greige text-avorio;
+            }
+            .link-discreto {
+                @apply text-greige relative after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-px after:bg-accent after:transition-all after:duration-300;
+            }
+            .link-discreto:hover:after {
+                @apply w-full;
+            }
+            
+            /* Stile Form "Luxury" */
+            .form-input-luxury {
+                @apply w-full px-1 py-3 bg-transparent border-0 border-b border-greige/30 focus:outline-none focus:ring-0 focus:border-accent transition-colors duration-300 font-secondary;
+            }
+        }
+        /* Stili personalizzati per la paginazione di Swiper */
+        .swiper-pagination-bullet {
+            width: 6px;
+            height: 6px;
+            background-color: var(--color-greige);
+            opacity: 0.3;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background-color: var(--color-accent);
+            transform: scale(1.25);
+        }
+    </style>
+
+    <script>
+        // Configurazione di Tailwind (viene letta dallo script nel <head>)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'avorio': '#FEF9ED',
+                        'greige': '#41403E',
+                        'accent': '#B4C5D1'
+                    },
+                    fontFamily: {
+                        'primary': ['"EB Garamond"', 'serif'],
+                        'secondary': ['"Work Sans"', 'sans-serif']
+                    }
+                }
+            },
+            /* Il plugin aspect-ratio è già caricato tramite lo script nel <head> */
+        }
+    </script>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <!-- ===== HEADER MOBILE (Ex Header Principale) ===== -->
+    <!-- Nascosto su desktop (md:hidden) -->
+    <header id="page-header" class="fixed top-0 left-0 right-0 z-50 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex md:hidden justify-between items-start transition-all duration-500 ease-out pointer-events-none">
+        
+        <!-- Tab 1: Logo (Squadrato, Azzurro) -->
+        <a href="#" class="flex items-center group pointer-events-auto bg-accent p-4 md:px-6 md:py-4 border border-t-0 border-greige/10" aria-label="Fioreria del Lago - Pagina Iniziale">
+            <!-- fiore.svg solo su mobile (h-8) -->
+            <img src="fiore.svg" alt="Fioreria del Lago" class="block md:hidden h-8" style="filter: brightness(0) invert(1) sepia(1) saturate(100) hue-rotate(200deg) brightness(2.5);">
+            <!-- Logo Esteso (con filtro) nascosto su mobile -->
+            <img src="Fioreria_del_Lago.svg" alt="Fioreria del Lago Logo" class="hidden md:block h-10 md:h-12" style="filter: brightness(0) invert(1) sepia(1) saturate(100) hue-rotate(200deg) brightness(2.5);">
+        </a>
+
+        <!-- Tab 2: Navigazione (Smussato, Avorio) -->
+        <nav class="hidden md:flex items-center space-x-8 pointer-events-auto bg-avorio px-6 py-4 border border-t-0 border-greige/10 rounded-b-lg shadow-sm">
+            <a href="#studio" class="font-secondary text-base link-discreto" data-lang-key="nav.studio">Studio</a>
+            <a href="#filosofia" class="font-secondary text-base link-discreto" data-lang-key="nav.filosofia">Filosofia</a>
+            <a href="#servizi" class="font-secondary text-base link-discreto" data-lang-key="nav.servizi">Servizi</a>
+            <a href="#galleria" class="font-secondary text-base link-discreto" data-lang-key="nav.galleria">Galleria</a>
+            <a href="#contatti" class="font-secondary text-base link-discreto" data-lang-key="nav.contatti">Contatti</a>
+        </nav>
+        
+        <!-- Tab 3: Menu mobile (Smussato, Avorio) -->
+        <button id="mobile-menu-btn" class="md:hidden p-4 text-greige pointer-events-auto bg-avorio border border-t-0 border-greige/10 rounded-b-lg shadow-sm" aria-label="Apri menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </header>
+    
+    <!-- Menu Mobile (Nascosto di default, Sfondo Avorio) -->
+    <div id="mobile-menu" class="fixed inset-0 bg-avorio z-[60] flex flex-col items-center justify-center space-y-8 transition-transform duration-500 ease-in-out transform -translate-y-full md:hidden">
+        <button id="mobile-close-btn" class="absolute top-6 right-6 p-4 text-greige" aria-label="Chiudi menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <!-- Testo greige -->
+        <a href="#studio" class="font-primary text-4xl text-greige" data-lang-key="nav.studio">Studio</a>
+        <a href="#filosofia" class="font-primary text-4xl text-greige" data-lang-key="nav.filosofia">Filosofia</a>
+        <a href="#servizi" class="font-primary text-4xl text-greige" data-lang-key="nav.servizi">Servizi</a>
+        <a href="#galleria" class="font-primary text-4xl text-greige" data-lang-key="nav.galleria">Galleria</a>
+        <a href="#contatti" class="font-primary text-4xl text-greige" data-lang-key="nav.contatti">Contatti</a>
+    </div>
+
+
+    <!-- ===== NAVIGAZIONE DESKTOP (LOGO STICKY) ===== -->
+    <!-- Questo è ora l'unico header desktop -->
+    <header id="sticky-logo-header" class="hidden md:block sticky top-0 z-40 transition-all duration-500 ease-out">
+        <a href="#" class="relative w-full block" aria-label="Fioreria del Lago - Torna in cima">
+            <!-- 1. Spacer invisibile per aspect-ratio -->
+            <img src="Fioreria_del_Lago.svg" alt="" class="w-full h-auto opacity-0" />
+            
+            <!-- 2. Il Logo Visibile (sovrapposto) -->
+            <div class="absolute inset-0 w-full h-full bg-accent"
+                 style="-webkit-mask-image: url(Fioreria_del_Lago.svg);
+                        mask-image: url(Fioreria_del_Lago.svg);
+                        -webkit-mask-size: contain;
+                        mask-size: contain;
+                        -webkit-mask-repeat: no-repeat;
+                        -webkit-mask-position: center;
+                        mask-position: center;">
+            </div>
+        </a>
+    </header>
+
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ===== HERO SECTION ===== -->
+        <!-- Altezza ripristinata a h-screen -->
+        <section class="relative h-screen text-left text-greige overflow-hidden">
+            
+            <!-- Livello 1: Sfondo (Myosotis.png) -->
+            <div class="absolute inset-0 z-0">
+                <img src="Myosotis.png" 
+                     alt="Close-up etereo del fiore Myosotis (Non ti scordar di me)" 
+                     class="w-full h-full object-cover">
+                <!-- Overlay gradiente per leggibilità testo a sinistra -->
+                <div class="absolute inset-0 bg-gradient-to-r from-avorio/70 via-avorio/30 to-transparent"></div>
+            </div>
+
+            <!-- Livello 3: Testo (a sinistra, IN ALTO, allineato con guide) -->
+            <div class="relative z-20 h-full flex flex-col justify-start max-w-xl px-6 md:px-12 lg:px-16 pt-[6rem] md:pt-[7.5rem]">
+                <h1 class="font-primary text-4xl md:text-5xl lg:text-6xl" style="text-transform: capitalize;" data-lang-key="hero.title">
+                    Intrecciamo Emozioni nell'Eternità
+                </h1>
+                <p class="font-secondary text-lg md:text-xl mt-6" data-lang-key="hero.subtitle">
+                    Sussurri di design floreale. Qui, dove il Lago di Como incontra l'incanto.
+                </p>
+            </div>
+            
+            <!-- Logo sticky rimosso da qui -->
+
+        </section>
+        
+        <!-- Sentinel rimossa, non più necessaria -->
+
+
+        <!-- ===== STUDIO (PHILOSOPHY) SECTION ===== -->
+        <section id="studio" class="py-16 md:py-24 lg:py-32 px-8 lg:px-16">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
+                
+                <div class="text-left">
+                    <span class="font-secondary text-sm tracking-widest uppercase text-greige/70" data-lang-key="studio.tag">Il Nostro Studio</span>
+                    <h2 class="font-primary text-3xl md:text-4xl lg:text-5xl mt-4" style="text-transform: capitalize;" data-lang-key="studio.title">
+                        Il Lusso Silenzioso del Design Floreale
+                    </h2>
+                    <p class="font-secondary text-base md:text-lg leading-relaxed mt-6 mb-4" data-lang-key="studio.p1">
+                        Siamo uno Studio di Design. Non creiamo composizioni, disegnamo atmosfere. La nostra ispirazione è il "Giardino Organico": un'estetica fluida, eterea, che respira con l'evento.
+                    </p>
+                </div>
+
+                <div>
+                    <!-- Immagine Studio Reale -->
+                    <img src="https://images.unsplash.com/photo-1572111536098-7c88b4b9b5f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80" 
+                         alt="Interno di una boutique di fiori elegante e materica, con luce naturale" 
+                         class="w-full h-auto object-cover rounded-lg shadow-xl aspect-[4/5]">
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FILOSOFIA (NON TI SCORDAR DI ME) SECTION ===== -->
+        <section id="filosofia" class="py-16 md:py-24 lg:py-32 px-8 bg-greige/5">
+            <div class="max-w-3xl mx-auto text-center">
+                <!-- Fiore SVG -->
+                <img src="fiore.svg" alt="Icona Fiore 'Non ti scordar di me'" class="h-16 w-16 mx-auto text-greige opacity-70 mb-6">
+                
+                <span class="font-secondary text-sm tracking-widest uppercase text-greige/70" data-lang-key="filosofia.tag">La Nostra Filosofia</span>
+                <h2 class="font-primary text-3xl md:text-4xl lg:text-5xl mt-4" style="text-transform: capitalize;" data-lang-key="filosofia.title">
+                    Il "Non ti scordar di me"
+                </h2>
+                
+                <p class="font-primary text-xl md:text-2xl leading-relaxed italic mt-8 mb-8 text-greige/90" data-lang-key="filosofia.p1">
+                    Il Myosotis è il nostro simbolo, ma è più di un fiore: è una promessa. Quella della Memoria Indelebile e dell'Amore Fedele. Il nostro vero lavoro non è vendere fiori, ma sedurre il tempo per trasformare un istante in eternità.
+                </p>
+                
+                <p class="font-secondary text-base md:text-lg leading-relaxed mt-6" data-lang-key="filosofia.p2">
+                    Questa è la nostra filosofia: un'estetica sartoriale che incontra un approccio umano. Il nostro metodo unisce la precisione del lusso a un calore che invita alla condivisione. Ascoltiamo la visione, per poi realizzarla con cura autentica.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== SERVIZI (B2B TARGET) SECTION ===== -->
+        <section id="servizi" class="py-16 md:py-20 lg:py-28 px-8 lg:px-16 bg-avorio">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <span class="font-secondary text-sm tracking-widest uppercase text-greige/70" data-lang-key="servizi.tag">Servizi Sartoriali</span>
+                    <h2 class="font-primary text-3xl md:text-4xl lg:text-5xl mt-4" style="text-transform: capitalize;" data-lang-key="servizi.title">
+                        Come possiamo aiutarti?
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-6xl mx-auto">
+                    
+                    <div class="text-center p-8 border-b md:border-b-0 md:border-r border-greige/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-greige h-12 w-12">
+                            <path d="M12 5a3 3 0 1 1 6 0 3 3 0 1 1-6 0z"/>
+                            <path d="M12 1a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"/>
+                            <path d="M12 17a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"/>
+                            <path d="M12 13a3 3 0 1 1 6 0 3 3 0 1 1-6 0z"/>
+                            <path d="m16.5 14.8-.9-.8"/>
+                            <path d="m16.5 10.2-.9.8"/>
+                            <path d="m19 12-1 0"/>
+                            <path d="m14 12 1 0"/>
+                            <path d="m15 13.5.8.9"/>
+                            <path d="m15 8.5.8-.9"/>
+                        </svg>
+                        <h3 class="font-primary text-2xl md:text-3xl" style="text-transform: capitalize;" data-lang-key="servizi.1.title">Matrimoni sul Lago</h3>
+                        <p class="font-secondary text-sm md:text-base leading-relaxed mt-4 text-greige/90 min-h-[7rem]" data-lang-key="servizi.1.desc">
+                            Scenografie sartoriali che seducono lo sguardo e traducono la vostra visione in una memoria indelebile.
+                        </p>
+                        <a href="#contatti" class="font-secondary text-sm tracking-wider mt-6 inline-block link-discreto uppercase" data-lang-key="servizi.scopri">
+                            – Scopri –
+                        </a>
+                    </div>
+                    
+                    <div class="text-center p-8 border-b md:border-b-0 md:border-r border-greige/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-greige h-12 w-12">
+                            <path d="M8 2v4"/>
+                            <path d="M16 2v4"/>
+                            <rect width="18" height="18" x="3" y="4" rx="2"/>
+                            <path d="M3 10h18"/>
+                        </svg>
+                        <h3 class="font-primary text-2xl md:text-3xl" style="text-transform: capitalize;" data-lang-key="servizi.2.title">Eventi e Corporate</h3>
+                        <p class="font-secondary text-sm md:text-base leading-relaxed mt-4 text-greige/90 min-hidden-[7rem]" data-lang-key="servizi.2.desc">
+                            Interpretiamo il vostro messaggio con installazioni che dialogano con lo spazio. Un'eleganza impeccabile che trasforma la visione in emozione.
+                        </p>
+                        <a href="#contatti" class="font-secondary text-sm tracking-wider mt-6 inline-block link-discreto uppercase" data-lang-key="servizi.scopri">
+                            – Scopri –
+                        </a>
+                    </div>
+                    
+                    <div class="text-center p-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-greige h-12 w-12">
+                            <path d="M10 9.5a2.5 2.5 0 1 0 5 0m-5 0v6.5m5 0a2.5 2.5 0 1 1-5 0m5 0V22"/>
+                        </svg>
+                        <h3 class="font-primary text-2xl md:text-3xl" style="text-transform: capitalize;" data-lang-key="servizi.3.title">Ville e Hotel di Lusso</h3>
+                        <p class="font-secondary text-sm md:text-base leading-relaxed mt-4 text-greige/99 min-h-[7rem]" data-lang-key="servizi.3.desc">
+                            Un respiro floreale che accoglie i vostri ospiti. Creiamo un lusso discreto, un'atmosfera che si rinnova, giorno dopo giorno.
+                        </p>
+                        <a href="#contatti" class="font-secondary text-sm tracking-wider mt-6 inline-block link-discreto uppercase" data-lang-key="servizi.scopri">
+                            – Scopri –
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GALLERIA (CAROSELLO SWIPER) SECTION ===== -->
+        <section id="galleria" class="py-16 md:py-24 lg:py-32 px-8 lg:px-16 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-left max-w-3xl mb-12 md:mb-16">
+                    <span class="font-secondary text-sm tracking-widest uppercase text-greige/70" data-lang-key="galleria.tag">Ispirazioni</span>
+                    <h2 class="font-primary text-3xl md:text-4xl lg:text-5xl mt-4" style="text-transform: capitalize;" data-lang-key="galleria.title">
+                        Il Concetto di Giardino Organico
+                    </h2>
+                </div>
+                
+                <!-- Contenitore Swiper -->
+                <div class="relative max-w-6xl mx-auto">
+                    <!-- Swiper -->
+                    <div class="swiper gallery-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1562601263-44c1d38b410e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+                                     alt="Dettaglio di un bouquet sartoriale con fiori rari e colori desaturati" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1616181466030-8d0b2f0b7f8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+                                     alt="Installazione floreale fluida su una scalinata di una villa sul lago" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1628103132049-5666133a8473?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+                                     alt="Tavola imperiale con runner floreale organico in luce naturale" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                            <!-- Slide 4 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1520690029093-3b5b639e46f2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+                                     alt="Arco di cerimonia sul Lago di Como, stile 'garden-inspired'" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                            <!-- Slide 5 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1618062776858-6af10c3639c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+                                     alt="Dettaglio floreale in luce autentica al tramonto" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                            <!-- Slide 6 -->
+                            <div class="swiper-slide">
+                                <img src="https://images.unsplash.com/photo-1587825102868-df9a6b05d15a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                     alt="Allestimento di un evento corporate con fiori eleganti" 
+                                     class="w-full h-auto object-cover rounded-lg aspect-[4/5]">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frecce di Navigazione "Sottili ed Eleganti" -->
+                    <div id="gallery-prev" class="absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 z-10 p-3 bg-avorio/70 backdrop-blur-sm rounded-full cursor-pointer transition-all hover:bg-avorio border border-greige/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-greige" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </div>
+                    <div id="gallery-next" class="absolute top-1/2 -translate-y-1/2 right-0 md:-right-16 z-10 p-3 bg-avorio/70 backdrop-blur-sm rounded-full cursor-pointer transition-all hover:bg-avorio border border-greige/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-greige" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Paginazione "Pallini" -->
+                <div class="swiper-pagination gallery-pagination text-center relative mt-12"></div>
+            </div>
+        </section>
+
+
+        <!-- ===== CONTATTI (CTA B2B) SECTION ===== -->
+        <section id="contatti" class="py-20 md:py-24 lg:py-32 px-8 bg-greige/5 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="font-primary text-3xl md:text-4xl lg:text-5xl" style="text-transform: capitalize;" data-lang-key="contatti.title">
+                    Disegniamo Insieme un Ricordo
+                </h2>
+                <p class="font-secondary text-base md:text-lg leading-relaxed mt-6 mb-10" data-lang-key="contatti.desc">
+                    Un invito a partner che, come noi, ricercano un'estetica pura e senza tempo. Ascoltiamo la visione, per poi realizzarla con cura autentica.
+                </p>
+                
+                <!-- Form Web3Forms -->
+                <form action="https://api.web3forms.com/submit" method="POST" class="w-full max-w-lg mx-auto text-left space-y-8">
+                    <input type="hidden" name="access_key" value="09417b3b-3cd3-4aaa-b28b-e11379eb3232">
+
+                    <!-- Campo Nome -->
+                    <div class="relative">
+                        <input type="text" name="name" id="name" required
+                               class="form-input-luxury peer"
+                               placeholder=" " />
+                        <label for="name" 
+                               class="absolute left-1 -top-3.5 font-secondary text-sm text-greige/80 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-greige/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-greige/80 peer-focus:text-sm" 
+                               data-lang-key="form.nome.label">
+                               Il vostro Nome
+                        </label>
+                    </div>
+
+                    <!-- Campo Email -->
+                    <div class="relative">
+                        <input type="email" name="email" id="email" required
+                               class="form-input-luxury peer"
+                               placeholder=" " />
+                        <label for="email" 
+                               class="absolute left-1 -top-3.5 font-secondary text-sm text-greige/80 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-greige/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-greige/80 peer-focus:text-sm" 
+                               data-lang-key="form.email.label">
+                               La vostra Email
+                        </label>
+                    </div>
+                    
+                    <!-- Campo Messaggio -->
+                    <div class="relative">
+                        <textarea name="message" id="message" rows="4" required
+                                  class="form-input-luxury peer"
+                                  placeholder=" "></textarea>
+                        <label for="message" 
+                               class="absolute left-1 -top-3.5 font-secondary text-sm text-greige/80 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-greige/60 peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-greige/80 peer-focus:text-sm" 
+                               data-lang-key="form.messaggio.label">
+                               Il vostro Messaggio
+                        </label>
+                    </div>
+                    
+                    <div class="text-center pt-4">
+                        <button type="submit" class="btn w-full md:w-auto" data-lang-key="form.bottone">
+                            Invia Richiesta
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER "SITEMAP-STYLE" ===== -->
+    <footer class="py-16 md:py-24 px-8 lg:px-16 bg-avorio border-t border-greige/10">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                
+                <div class="flex flex-col items-start space-y-6">
+                    <a href="#" aria-label="Fioreria del Lago - Pagina Iniziale">
+                        <!-- Logo Stacked -->
+                        <img src="Fioreria_del_Lago_stacked.svg" alt="Fioreria del Lago Logo" class="w-36">
+                    </a>
+                    <a href="https://zjncoo.github.io/zinco/index.html" target="_blank" rel="noopener noreferrer" class="opacity-70 hover:opacity-100 transition-opacity">
+                        <!-- Logo Designer -->
+                        <img src="designed_by_zinco.svg" alt="Designed by Zinco" class="h-6">
+                    </a>
+                </div>
+
+                <div>
+                    <h4 class="font-primary text-xl" style="text-transform: capitalize;" data-lang-key="footer.nav.title">Navigazione</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#studio" class="font-secondary link-discreto" data-lang-key="nav.studio">Studio</a></li>
+                        <li><a href="#filosofia" class="font-secondary link-discreto" data-lang-key="nav.filosofia">Filosofia</a></li>
+                        <li><a href="#servizi" class="font-secondary link-discreto" data-lang-key="nav.servizi">Servizi</a></li>
+                        <li><a href="#galleria" class="font-secondary link-discreto" data-lang-key="nav.galleria">Galleria</a></li>
+                        <li><a href="#contatti" class="font-secondary link-discreto" data-lang-key="nav.contatti">Contatti</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-primary text-xl" style="text-transform: capitalize;" data-lang-key="footer.services.title">Servizi</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#servizi" class="font-secondary link-discreto" data-lang-key="servizi.1.title">Matrimoni sul Lago</a></li>
+                        <li><a href="#servizi" class="font-secondary link-discreto" data-lang-key="servizi.2.title">Eventi e Corporate</a></li>
+                        <li><a href="#servizi" class="font-secondary link-discreto" data-lang-key="servizi.3.title">Ville e Hotel di Lusso</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-primary text-xl" style="text-transform: capitalize;" data-lang-key="footer.social.title">Social</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="font-secondary link-discreto" data-lang-key="footer.social.1">Instagram</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="font-secondary link-discreto" data-lang-key="footer.social.2">Pinterest</a></li>
+                    </ul>
+                    <h4 class="font-primary text-xl mt-8" style="text-transform: capitalize;" data-lang-key="footer.legal.title">Legal</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="font-secondary link-discreto" data-lang-key="footer.privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-greige/10 text-center md:text-left">
+                <p class="font-secondary text-sm text-greige/70" data-lang-key="footer.indirizzo">
+                    Via Regina, 45 - 22016 Tremezzina (CO) | P.IVA 01234567890
+                </p>
+                <p class="font-secondary text-xs text-greige/50 mt-2" data-lang-key="footer.copyright">
+                    © 2025 Fioreria del Lago. Tutti i diritti riservati.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- ===== NAVIGAZIONE DESKTOP (IN BASSO) ===== -->
+    <nav id="desktop-nav-bottom" class="hidden md:flex fixed bottom-0 left-0 right-0 z-50 justify-start pointer-events-none transition-all duration-500 ease-out">
+        <!-- Contenitore allineato a sinistra con lo stesso padding dell'header -->
+        <div class="px-6 md:px-12 lg:px-16 pointer-events-auto">
+            <!-- La "Cartelletta" (smussata solo in alto) -->
+            <div class="flex items-center space-x-8 bg-avorio px-6 py-4 border border-b-0 border-greige/10 rounded-t-lg shadow-sm">
+                <a href="#studio" class="font-secondary text-base link-discreto" data-lang-key="nav.studio">Studio</a>
+                <a href="#filosofia" class="font-secondary text-base link-discreto" data-lang-key="nav.filosofia">Filosofia</a>
+                <a href="#servizi" class="font-secondary text-base link-discreto" data-lang-key="nav.servizi">Servizi</a>
+                <a href="#galleria" class="font-secondary text-base link-discreto" data-lang-key="nav.galleria">Galleria</a>
+                <a href="#contatti" class="font-secondary text-base link-discreto" data-lang-key="nav.contatti">Contatti</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bottone Torna Su -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 z-40 p-3 bg-avorio/80 backdrop-blur-sm rounded-full transition-all duration-300 opacity-0 transform translate-y-4 hover:bg-avorio border border-greige/10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-greige" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+
+    <!-- ===== SCRIPT PRINCIPALE ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- GESTIONE LENIS (LUXURY SCROLL) ---
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1.0,
+                smoothTouch: false,
+                touchMultiplier: 2,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // Collega i link di ancoraggio a Lenis
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault(); 
+                    
+                    const targetId = this.getAttribute('href');
+                    
+                    // Gestione chiusura menu mobile al click
+                    if (document.getElementById('mobile-menu')?.contains(this)) {
+                        document.getElementById('mobile-menu')?.classList.add('-translate-y-full');
+                    }
+                    
+                    if (targetId === '#') {
+                        lenis.scrollTo(0);
+                    } else {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            lenis.scrollTo(targetElement);
+                        }
+                    }
+                });
+            });
+            
+            // --- GESTIONE TRADUZIONI ---
+            const translations = {
+                'it': {
+                    'nav.studio': 'Studio',
+                    'nav.filosofia': 'Filosofia',
+                    'nav.servizi': 'Servizi',
+                    'nav.galleria': 'Galleria',
+                    'nav.contatti': 'Contatti',
+                    'hero.title': 'Intrecciamo Emozioni nell\'Eternità',
+                    'hero.subtitle': 'Sussurri di design floreale. Qui, dove il Lago di Como incontra l\'incanto.',
+                    'studio.tag': 'Il Nostro Studio',
+                    'studio.title': 'Il Lusso Silenzioso del Design Floreale',
+                    'studio.p1': 'Siamo uno Studio di Design. Non creiamo composizioni, disegnamo atmosfere. La nostra ispirazione è il "Giardino Organico": un\'estetica fluida, eterea, che respira con l\'evento.',
+                    'filosofia.tag': 'La Nostra Filosofia',
+                    'filosofia.title': 'Il "Non ti scordar di me"',
+                    'filosofia.p1': 'Il Myosotis è il nostro simbolo, ma è più di un fiore: è una promessa. Quella della Memoria Indelebile e dell\'Amore Fedele. Il nostro vero lavoro non è vendere fiori, ma sedurre il tempo per trasformare un istante in eternità.',
+                    'filosofia.p2': 'Questa è la nostra filosofia: un\'estetica sartoriale che incontra un approccio umano. Il nostro metodo unisce la precisione del lusso a un calore che invita alla condivisione. Ascoltiamo la visione, per poi realizzarla con cura autentica.',
+                    'servizi.tag': 'Servizi Sartoriali',
+                    'servizi.title': 'Come possiamo aiutarti?',
+                    'servizi.1.title': 'Matrimoni sul Lago',
+                    'servizi.1.desc': 'Scenografie sartoriali che seducono lo sguardo e traducono la vostra visione in una memoria indelebile.',
+                    'servizi.2.title': 'Eventi e Corporate',
+                    'servizi.2.desc': 'Interpretiamo il vostro messaggio con installazioni che dialogano con lo spazio. Un\'eleganza impeccabile che trasforma la visione in emozione.',
+                    'servizi.3.title': 'Ville e Hotel di Lusso',
+                    'servizi.3.desc': 'Un respiro floreale che accoglie i vostri ospiti. Creiamo un lusso discreto, un\'atmosfera che si rinnova, giorno dopo giorno.',
+                    'servizi.scopri': '– Scopri –',
+                    'galleria.tag': 'Ispirazioni',
+                    'galleria.title': 'Il Concetto di Giardino Organico',
+                    'contatti.title': 'Disegniamo Insieme un Ricordo',
+                    'contatti.desc': 'Un invito a partner che, come noi, ricercano un\'estetica pura e senza tempo. Ascoltiamo la visione, per poi realizzarla con cura autentica.',
+                    'form.nome.label': 'Il vostro Nome',
+                    'form.email.label': 'La vostra Email',
+                    'form.messaggio.label': 'Il vostro Messaggio',
+                    'form.bottone': 'Invia Richiesta',
+                },
+                'en': {
+                    'nav.studio': 'Studio',
+                    'nav.filosofia': 'Philosophy',
+                    'nav.servizi': 'Services',
+                    'nav.galleria': 'Gallery',
+                    'nav.contatti': 'Contact',
+                    'hero.title': 'Weaving Emotions into Eternity',
+                    'hero.subtitle': 'Whispers of floral design. Here, where Lake Como meets enchantment.',
+                    'studio.tag': 'Our Studio',
+                    'studio.title': 'The Quiet Luxury of Floral Design',
+                    'studio.p1': 'We are a Design Studio. We don\'t create arrangements; we design atmospheres. Our inspiration is the "Organic Garden": a fluid, ethereal aesthetic that breathes with the event.',
+                    'filosofia.tag': 'Our Philosophy',
+                    'filosofia.title': 'The "Forget-Me-Not"',
+                    'filosofia.p1': 'The Myosotis is our symbol, but it\'s more than a flower: it\'s a promise. That of Indelible Memory and Faithful Love. Our real job isn\'t to sell flowers, but to seduce time itself, transforming a fleeting moment into an eternity.',
+                    'filosofia.p2': 'This is our philosophy: a sartorial aesthetic that meets a human approach. Our method combines the precision of luxury with a warmth that invites sharing. We listen to the vision, then bring it to life with authentic care.',
+                    'servizi.tag': 'Bespoke Services',
+                    'servizi.title': 'How can we help you?',
+                    'servizi.1.title': 'Lake Como Weddings',
+                    'servizi.1.desc': 'Sartorial scenography that captivates the eye and translates your vision into an indelible memory.',
+                    'servizi.2.title': 'Corporate & Events',
+                    'servizi.2.desc': 'We interpret your message with installations that dialogue with the space. An impeccable elegance that transforms vision into emotion.',
+                    'servizi.3.title': 'Luxury Villas & Hotels',
+                    'servizi.3.desc': 'A floral breath that welcomes your guests. We create discreet luxury, an atmosphere that renews itself, day after day.',
+                    'servizi.scopri': '– Discover –',
+                    'galleria.tag': 'Inspirations',
+                    'galleria.title': 'The Organic Garden Concept',
+                    'contatti.title': 'Let\'s Design a Memory Together',
+                    'contatti.desc': 'An invitation to partners who, like us, seek a pure and timeless aesthetic. Tell us an idea: we will listen to transform it into an indelible memory.',
+                    'form.nome.label': 'Your Name',
+                    'form.email.label': 'Your Email',
+                    'form.messaggio.label': 'Your Message',
+                    'form.bottone': 'Send Request',
+                },
+                'de': {
+                    'nav.studio': 'Studio',
+                    'nav.filosofia': 'Philosophie',
+                    'nav.servizi': 'Leistungen',
+                    'nav.galleria': 'Galerie',
+                    'nav.contatti': 'Kontakt',
+                    'hero.title': 'Emotionen in die Ewigkeit weben',
+                    'hero.subtitle': 'Flüstern des Blumendesigns. Hier, wo der Comer See auf Zauber trifft.',
+                    'studio.tag': 'Unser Studio',
+                    'studio.title': 'Der stille Luxus des Blumendesigns',
+                    'studio.p1': 'Wir sind ein Designstudio. Wir erstellen keine Gestecke; wir gestalten Atmosphären. Unsere Inspiration ist der "Organische Garten": eine fließende, ätherische Ästhetik, die mit dem Event atmet.',
+                    'filosofia.tag': 'Unsere Philosophie',
+                    'filosofia.title': 'Das "Vergissmeinnicht"',
+                    'filosofia.p1': 'Das Myosotis ist unser Symbol, aber es ist mehr als eine Blume: Es ist ein Versprechen. Das der unauslöschlichen Erinnerung und der treuen Liebe. Unsere wahre Aufgabe ist es nicht, Blumen zu verkaufen, sondern die Zeit zu verführen, um einen flüchtigen Moment in Ewigkeit zu verwandeln.',
+                    'filosofia.p2': 'Das ist unsere Philosophie: eine maßgeschneiderte Ästhetik, die auf einen menschlichen Ansatz trifft. Unsere Methode verbindet die Präzision des Luxus mit einer Wärme, die zum Teilen einlädt. Wir hören der Vision zu, um sie dann mit authentischer Sorgfalt umzusetzen.',
+                    'servizi.tag': 'Maßgeschneiderte Leistungen',
+                    'servizi.title': 'Wie können wir Ihnen helfen?',
+                    'servizi.1.title': 'Hochzeiten am See',
+                    'servizi.1.desc': 'Maßgeschneiderte Szenerien, die den Blick verführen und Ihre Vision in eine unvergessliche Erinnerung verwandeln.',
+                    'servizi.2.title': 'Events & Firmen',
+                    'servizi.2.desc': 'Wir interpretieren Ihre Botschaft mit Installationen, die mit dem Raum in Dialog treten. Eine makellose Eleganz, die Vision in Emotion verwandelt.',
+                    'servizi.3.title': 'Luxusvillen & Hotels',
+                    'servizi.3.desc': 'Ein floraler Hauch, der Ihre Gäste empfängt. Wir schaffen diskreten Luxus, eine Atmosphäre, die sich Tag für Tag erneuert.',
+                    'servizi.scopri': '– Entdecken –',
+                    'galleria.tag': 'Inspirationen',
+                    'galleria.title': 'Das Konzept des Organischen Gartens',
+                    'contatti.title': 'Lassen Sie uns gemeinsam eine Erinnerung gestalten',
+                    'contatti.desc': 'Eine Einladung an Partner, die wie wir eine reine und zeitlose Ästhetik suchen. Erzählen Sie uns eine Idee: Wir werden zuhören, um sie in eine unvergessliche Erinnerung zu verwandeln.',
+                    'form.nome.label': 'Ihr Name',
+                    'form.email.label': 'Ihre E-Mail',
+                    'form.messaggio.label': 'Ihre Nachricht',
+                    'form.bottone': 'Anfrage senden',
+                },
+                'ar': {
+                    'nav.studio': 'الاستوديو',
+                    'nav.filosofia': 'فلسفتنا',
+                    'nav.servizi': 'خدماتنا',
+                    'nav.galleria': 'المعرض',
+                    'nav.contatti': 'اتصل بنا',
+                    'hero.title': 'ننسج المشاعر في نسيج الخلود',
+                    'hero.subtitle': 'همسات من تصميم الزهور. هنا، حيث تلتقي بحيرة كومو بالسحر.',
+                    'studio.tag': 'الاستوديو الخاص بنا',
+                    'studio.title': 'الفخامة الهادئة لتصميم الزهور',
+                    'studio.p1': 'نحن استوديو تصميم. لا نصنع تنسiقات؛ بل نصمم أجواء. إلهامنا هو "الحديقة العضوية": جمالية سلسة، أثيرية، تتنفس مع الحدث.',
+                    'filosofia.tag': 'فلسفتنا',
+                    'filosofia.title': 'زهرة "لا تنساني"',
+                    'filosofia.p1': 'زهرة "Myosotis" هي رمزنا، لكنها أكثر من مجرد زهرة: إنها وعد. وعد بالذاكرة الراسخة والحب الوفي. عملنا الحقيقي ليس بيع الزهور، بل إغواء الزمن نفسه، لتحويل لحظة عابرة إلى خلود.',
+                    'filosofia.p2': 'هذه هي فلسفتنا: جمالية راقية تلتقي بنهج إنساني. يجمع أسلوبنا بين دقة الفخامة والدفء الذي يدعو للمشاركة. نحن نستمع إلى الرؤية، ثم نحققها برعاية أصيلة.',
+                    'servizi.tag': 'خدمات مخصصة',
+                    'servizi.title': 'كيف يمكننا مساعدتك؟',
+                    'servizi.1.title': 'حفلات الزفاف على البحيرة',
+                    'servizi.1.desc': 'تصاميم مسرحية تأسر الأنظار وترجمة رؤيتكم إلى ذكرى لا تُمحى.',
+                    'servizi.2.title': 'الفعاليات والشركات',
+                    'servizi.2.desc': 'نترجم رسالتكم بتنسiقات تتحاور مع المكان. أناقة لا تشوبها شائبة تحول الرؤية إلى إحساس.',
+                    'servizi.3.title': 'الفيلات والفنادق الفاخرة',
+                    'servizi.3.desc': 'نَفَسٌ من الزهور يرحب بضيوفكم. نخلق رفاهية سرية، وأجواء تتجدد يوماً بعد يوم.',
+                    'servizi.scopri': '– اكتشف –',
+                    'galleria.tag': 'إلهام',
+                    'galleria.title': 'مفهوم الحديقة العضوية',
+                    'contatti.title': 'لنصمم ذكرى معاً',
+                    'contatti.desc': 'دعوة للشركاء الذين، مثلنا، يبحثون عن جمالية نقية وخالدة. أخبرونا بفكرة: سنستمع إليها لنحولها إلى ذكرى لا تُمحى.',
+                    'form.nome.label': 'اسمك',
+                    'form.email.label': 'بريدك الإلكتروني',
+                    'form.messaggio.label': 'رسالتك',
+                    'form.bottone': 'إرسال الطلب',
+                }
+            };
+
+            const userLang = (navigator.language || navigator.userLanguage).split('-')[0];
+            let lang = 'en'; // Default in inglese
+
+            if (translations[userLang]) {
+                lang = userLang;
+            } else if (userLang === 'it' || userLang === 'de' || userLang === 'ar') {
+                lang = userLang;
+            }
+
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            const langStrings = translations[lang] || translations['en'];
+
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                const text = langStrings[key];
+                if (text && typeof text === 'string') {
+                    el.innerHTML = text.replace(/'/g, '&#39;');
+                }
+            });
+            
+            document.querySelectorAll('[data-lang-placeholder]').forEach(el => {
+                 const key = el.getAttribute('data-lang-placeholder');
+                 const text = langStrings[key];
+                 if (text && typeof text === 'string') {
+                     el.setAttribute('placeholder', text);
+                 }
+            });
+
+            // --- GESTIONE HEADER SCROLL (Solo per mobile) ---
+            const header = document.getElementById('page-header');
+            if (header) {
+                let lastScrollY = window.scrollY;
+                let scrollTimer;
+
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    clearTimeout(scrollTimer);
+
+                    if (currentScrollY <= 20) {
+                        header.style.transform = 'translateY(0)';
+                        header.style.opacity = '1';
+                    } else if (currentScrollY > lastScrollY) {
+                        header.style.transform = 'translateY(-100%)';
+                        header.style.opacity = '0';
+                    } else {
+                        header.style.transform = 'translateY(0)';
+                        header.style.opacity = '1';
+                    }
+                    
+                    scrollTimer = setTimeout(() => {
+                        if (currentScrollY > 20) {
+                            header.style.transform = 'translateY(0)';
+                            header.style.opacity = '1';
+                        }
+                    }, 250);
+                    
+                    lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+                });
+            }
+
+            // --- GESTIONE NAVIGAZIONE DESKTOP (LOGO + MENU) ---
+            // Logica semplificata per controllare ENTRAMBI gli elementi
+            const stickyLogoHeader = document.getElementById('sticky-logo-header');
+            const desktopNavBottom = document.getElementById('desktop-nav-bottom');
+            
+            if (stickyLogoHeader && desktopNavBottom) {
+                let lastScrollY = window.scrollY;
+                let scrollTimer;
+
+                window.addEventListener('scroll', () => {
+                    // Esegui solo su desktop
+                    if (window.innerWidth >= 768) { 
+                        const currentScrollY = window.scrollY;
+                        clearTimeout(scrollTimer);
+
+                        if (currentScrollY > lastScrollY && currentScrollY > 100) { 
+                            // Scendendo: nascondi entrambi
+                            stickyLogoHeader.style.transform = 'translateY(-100%)';
+                            stickyLogoHeader.style.opacity = '0';
+                            desktopNavBottom.style.transform = 'translateY(100%)';
+                            desktopNavBottom.style.opacity = '0';
+                        } else { 
+                            // Salendo: mostra entrambi
+                            stickyLogoHeader.style.transform = 'translateY(0)';
+                            stickyLogoHeader.style.opacity = '1';
+                            desktopNavBottom.style.transform = 'translateY(0)';
+                            desktopNavBottom.style.opacity = '1';
+                        }
+                        
+                        scrollTimer = setTimeout(() => {
+                            // Riappare se fermo
+                            stickyLogoHeader.style.transform = 'translateY(0)';
+                            stickyLogoHeader.style.opacity = '1';
+                            desktopNavBottom.style.transform = 'translateY(0)';
+                            desktopNavBottom.style.opacity = '1';
+                        }, 250); // 250ms di inattività
+                        
+                        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+                    }
+                });
+            }
+            
+            // --- GESTIONE STATO MENU (ALTO vs BASSO) ---
+            // Rimossa tutta la logica 'IntersectionObserver' che causava bug
+            
+            // --- GESTIONE MENU MOBILE ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuBtn && mobileCloseBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('-translate-y-full');
+                });
+                mobileCloseBtn.addEventListener('click', () => {
+                    mobileMenu.classList.add('-translate-y-full');
+                });
+            }
+            
+            // --- GESTIONE BOTTONE "TORNA SU" ---
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                // Gestisce il click (usa Lenis)
+                backToTopBtn.addEventListener('click', () => {
+                    lenis.scrollTo(0);
+                });
+                // Mostra/Nasconde al scroll
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        backToTopBtn.style.opacity = '1';
+                        backToTopBtn.style.transform = 'translateY(0)';
+                    } else {
+                        backToTopBtn.style.opacity = '0';
+                        backToTopBtn.style.transform = 'translateY(1rem)';
+                    }
+                });
+            }
+
+            // --- INIZIALIZZAZIONE SWIPER (GALLERIA) ---
+            new Swiper('.gallery-swiper', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 20,
+                breakpoints: {
+                    // >= 768px
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 30
+                    },
+                    // >= 1024px
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30
+                    }
+                },
+                // Paginazione "pallini"
+                pagination: {
+                    el: '.gallery-pagination',
+                    clickable: true,
+                },
+                // Navigazione frecce "sottili ed eleganti"
+                navigation: {
+                    nextEl: '#gallery-next',
+                    prevEl: '#gallery-prev',
+                },
+            });
+
+        });
+    </script>
+
+</body>
+</html>
